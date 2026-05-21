@@ -92,7 +92,7 @@ export default function ReviewsPage() {
         return;
       }
 
-      setReviews(data || []);
+      setReviews((data || []) as unknown as Review[]);
     };
 
     fetchReviews();

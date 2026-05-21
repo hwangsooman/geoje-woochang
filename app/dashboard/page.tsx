@@ -33,7 +33,7 @@ export default async function DashboardPage() {
     );
   }
 
-  const reviewList = (reviews || []) as Review[];
+  const reviewList = (reviews || []) as unknown as Review[];
 
   const totalReviews = reviewList.length;
   const negativeReviews = reviewList.filter((review) => review.rating <= 2).length;

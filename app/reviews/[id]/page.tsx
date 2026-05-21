@@ -51,7 +51,7 @@ export default function ReviewDetailPage() {
         return;
       }
 
-      setReview(data as Review);
+      setReview(data as unknown as Review);
       setReply(data.saved_reply || data.ai_reply || "");
       setIsLoading(false);
     };
