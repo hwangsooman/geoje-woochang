@@ -15,40 +15,71 @@ export default function StorePage() {
         </p>
       </section>
 
-      <section className="bg-gray-50 py-12 px-6">
-        <div className="max-w-5xl mx-auto">
+      <section className="bg-gray-50 py-12 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold mb-8 text-center">대표 메뉴</h2>
 
-         <div className="grid md:grid-cols-3 gap-6">
-          {[
-             { name: "양선지해장국", price: "10,000원" },
-             { name: "양해장국", price: "10,000원" },
-            { name: "콩나물해장국", price: "11,000원" },
-            { name: "소고기우거지해장국", price: "10,000원" },
-            { name: "선지해장국", price: "8,000원" },
-            { name: "소내장탕", price: "12,000원" },
-            { name: "한우해장국", price: "10,000원" },
-            { name: "소머리국밥", price: "10,000원" },
-            { name: "도가니탕", price: "16,000원" },
-          ].map((menu) => (
-            <div
-              key={menu.name}
-              className="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition"
-          >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+         {[
+          {
+            name: "한우흑양선지해장국",
+            price: "10,000원",
+            image: "/store/hanwoojang_haejangguk.png",
+            desc: "깊고 진한 국물에 양과 선지를 함께 담은 우창해장국 대표 메뉴입니다.",
+          },
+          {
+           name: "소내장탕",
+           price: "12,000원",
+           image: "/store/naejangtang.jpg",
+           desc: "구수하고 깊은 국물 맛에 소내장의 고소함을 더한 든든한 메뉴입니다.",
+         },
+         {
+          name: "도가니수육",
+          price: "16,000원",
+          image: "/store/doganisuk.jpg",
+          desc: "부드러운 도가니와 진한 국물이 어우러진 보양식 메뉴입니다.",
+         },
+         {
+          name: "황태해장국",
+          price: "10,000원",
+          image: "/store/hangtae_haejangguk.png",
+          desc: "부드러운 고기와 따뜻한 국물이 조화를 이루는 인기 국밥 메뉴입니다.",
+        },
+        {
+          name: "선지해장국",
+          price: "8,000원",
+          image: "/store/sunji.jpg",
+          desc: "깔끔하고 시원한 국물 맛으로 부담 없이 즐기기 좋은 해장국입니다.",
+        },
+        {
+          name: "육회",
+          price: "가격 문의",
+          image: "/store/yukhai.jpg",
+          desc: "정성껏 삶아 부드럽고 담백한 맛을 살린 곁들임 메뉴입니다.",
+        },
+      ].map((menu) => (
+        <div
+          key={menu.name}
+          className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition"
+        >
+          <img
+            src={menu.image}
+            alt={menu.name}
+            className="w-full h-52 object-cover"
+          />
+
+          <div className="p-5">
             <h3 className="text-xl font-bold mb-2">{menu.name}</h3>
-
-            <p className="text-orange-700 font-semibold text-lg">
+            <p className="text-orange-700 font-semibold text-lg mb-3">
               {menu.price}
-           </p>
-
-            <p className="mt-3 text-gray-600 text-sm leading-6">
-              우창해장국의 정성과 깊은 맛을 담은 인기 메뉴입니다.
             </p>
+            <p className="text-gray-600 text-sm leading-6">{menu.desc}</p>
           </div>
-         ))}
-      </div>
-     </div>
-   </section>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 
    <section className="py-16 px-6 bg-white">
     <div className="max-w-6xl mx-auto">
