@@ -18,7 +18,8 @@ export default function RootLayout({
         <aside className="w-60 h-screen bg-gray-800 text-white p-5">
           <h2 className="text-xl font-bold mb-6">관리 시스템</h2>
           <nav className="flex flex-col gap-3">
-            <Link href="/">홈</Link>
+            <Link href="/store">홈</Link>
+            <Link href="/gallery">음식갤러리</Link>
             <Link href="/dashboard">대시보드</Link>
             <Link href="/reviews">리뷰 목록</Link>
             <Link href="/settings">설정</Link>
