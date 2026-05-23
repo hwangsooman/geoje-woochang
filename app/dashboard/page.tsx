@@ -81,7 +81,7 @@ export default async function DashboardPage() {
 
   return (
     <main className="p-10 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold mb-6">대시보드</h1>
+      <h1 className="text-2xl font-bold mb-8 text-gray-900">대시보드</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="bg-white rounded-2xl shadow p-6">

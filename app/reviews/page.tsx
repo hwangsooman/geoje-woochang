@@ -238,13 +238,13 @@ export default function ReviewsPage() {
           return (
             <Link key={review.id} href={`/reviews/${review.id}`}>
               <div
-                className={`bg-white p-5 rounded-xl shadow hover:bg-gray-50 cursor-pointer border ${
+                className={`bg-white text-gray-800 p-5 rounded-xl shadow hover:bg-gray-50 cursor-pointer border ${
                   isNegative ? "border-red-300" : "border-transparent"
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
                   <div>
-                    <p className="font-semibold">⭐ {review.rating}</p>
+                    <p className="font-semibold text-gray-900">⭐ {review.rating}</p>
                     <p className="text-sm text-gray-500">
                       {review.stores?.store_name}
                     </p>
@@ -269,7 +269,9 @@ export default function ReviewsPage() {
                   </div>
                 </div>
 
-                <p>{review.review_text}</p>
+                <p className="text-gray-800 mt-2 leading-relaxed">
+                     {review.review_text}
+               </p>
               </div>
             </Link>
           );
