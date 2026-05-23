@@ -27,7 +27,7 @@ export default async function DashboardPage() {
   if (error) {
     return (
       <main className="p-10">
-        <h1 className="text-2xl font-bold">대시보드</h1>
+        <h1 className="text-2xl font-bold mb-6 text-gray-900">대시보드</h1>
         <p className="text-red-600 mt-4">DB 조회 오류: {error.message}</p>
       </main>
     );
@@ -114,7 +114,7 @@ export default async function DashboardPage() {
       </div>
 
       <section className="bg-white rounded-2xl shadow p-6 mt-8">
-        <h2 className="text-xl font-semibold mb-4">운영 요약</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-900">운영 요약</h2>
         <p className="text-gray-700">
           현재 전체 리뷰 {totalReviews}건 중 부정 리뷰는 {negativeReviews}건이며,
           답글 저장이 완료된 리뷰는 {savedReplies}건입니다.
@@ -129,11 +129,11 @@ export default async function DashboardPage() {
       </section>
 
       <section className="bg-white rounded-2xl shadow p-6 mt-8">
-        <h2 className="text-xl font-semibold mb-4">가맹점별 리뷰 현황</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-900">가맹점별 리뷰 현황</h2>
 
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b bg-gray-50">
+            <tr className="border-b bg-gray-50 text-gray-900">
               <th className="text-left p-3">매장명</th>
               <th className="text-center p-3">전체 리뷰</th>
               <th className="text-center p-3">부정 리뷰</th>
@@ -155,7 +155,7 @@ export default async function DashboardPage() {
                     </Link>
                 </td>
 
-                <td className="p-3 text-center">{store.total}</td>
+                <td className="p-3 text-center text-gray-900">{store.total}</td>
                 <td className="p-3 text-center text-red-600">{store.negative}</td>
                 <td className="p-3 text-center text-green-600">{store.saved}</td>
                 <td className="p-3 text-center text-orange-600">{store.pending}</td>
