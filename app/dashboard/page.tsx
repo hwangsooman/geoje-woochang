@@ -86,7 +86,9 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="bg-white rounded-2xl shadow p-6">
           <p className="text-gray-500">전체 리뷰</p>
-          <p className="text-3xl font-bold mt-2">{totalReviews}</p>
+          <p className="text-3xl font-bold mt-2 text-gray-900">
+              {totalReviews}
+          </p>
         </div>
 
         <div className="bg-white rounded-2xl shadow p-6">

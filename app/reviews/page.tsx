@@ -109,13 +109,15 @@ export default function ReviewsPage() {
 
   return (
     <main className="p-10 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold mb-6">리뷰 목록</h1>
+      <h1 className="text-2xl font-bold mb-6 text-gray-900">
+          리뷰 목록
+      </h1>
 
       <div className="mb-6 flex flex-wrap items-center gap-4">
         <div>
-          <label className="mr-3 font-semibold">매장 선택:</label>
+          <label className="mr-3 font-semibold  text-gray-800 ">매장 선택:</label>
           <select
-            className="border p-2 rounded"
+           className="border p-2 rounded bg-white text-gray-900"
             value={selectedStoreId ?? "ALL"}
             onChange={(e) => {
               const value = e.target.value;
