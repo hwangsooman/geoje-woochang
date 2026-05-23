@@ -13,11 +13,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body className="min-h-screen md:flex">
+      <body className="min-h-screen md:flex bg-white text-gray-800">
         {/* 사이드 메뉴 */}
         <aside className="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r">
-          <h2 className="text-xl font-bold mb-6">관리 시스템</h2>
-          <nav className="flex md:flex-col overflow-x-auto gap-2 p-4">
+          <h2 className="text-xl font-bold mb-6 px-4 pt-4 text-gray-900">
+            관리 시스템
+            </h2>
+          <nav className="flex md:flex-col overflow-x-auto gap-2 p-4 text-gray-800 font-medium">
             <Link href="/store">홈</Link>
             <Link href="/gallery">음식갤러리</Link>
             <Link href="/dashboard">대시보드</Link>
