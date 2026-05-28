@@ -137,7 +137,7 @@ export default function StorePage() {
           <p><strong>상호:</strong> 우창해장국</p>
           <p><strong>주소:</strong> 경상남도 거제시 옥포성안로 25</p>
           <p><strong>전화:</strong> 055-688-6556</p>
-          <p><strong>영업시간:</strong> 매일 10:00 ~ 20:00</p>
+          <p><strong>영업시간:</strong> 매일 07:00 ~ 20:00</p>
         </div>
       </section>
 
@@ -149,7 +149,7 @@ export default function StorePage() {
 
        <div className="rounded-2xl overflow-hidden shadow-xl">
          
-       <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-wrap gap-2 mb-4">
          <a
             href="https://maps.google.com"
             target="_blank"
@@ -167,12 +167,12 @@ export default function StorePage() {
           </a>
 
           <a
-            href="tel:055-000-0000"
+            href="tel: 055-688-6556"
             className="bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-semibold"
            >
              전화하기
           </a>
-       </div>
+        </div>
          
          
          <iframe
