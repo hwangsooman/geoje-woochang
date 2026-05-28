@@ -167,7 +167,7 @@ export default function StorePage() {
           </a>
 
           <a
-            href="tel: 055-688-6556"
+            href="tel: 0556886556"
             className="bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-semibold"
            >
              전화하기
