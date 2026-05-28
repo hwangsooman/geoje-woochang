@@ -148,12 +148,39 @@ export default function StorePage() {
          </p>
 
        <div className="rounded-2xl overflow-hidden shadow-xl">
+         
+       <div className="flex flex-wrap gap-2 mb-4">
+         <a
+            href="https://maps.google.com"
+            target="_blank"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold"
+          >
+              구글지도
+          </a>
+
+          <a
+            href="https://map.naver.com"
+            target="_blank"
+            className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold"
+          >
+           네이버지도
+          </a>
+
+          <a
+            href="tel:055-000-0000"
+            className="bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-semibold"
+           >
+             전화하기
+          </a>
+       </div>
+         
+         
          <iframe
          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3272.7051841191187!2d128.69102191183535!3d34.8887487729856!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x35692d757359062d%3A0xccf5c3c305dc7e1a!2z7Jqw7LC97ZW07J6l6rWt!5e0!3m2!1sko!2skr!4v1779341002304!5m2!1sko!2skr"
          width="100%"
          height="500"
          loading="lazy"
-           className="border-0 w-full"
+           className="border-0 w-full h-[350px] md:h-[500px]"
          ></iframe>
         </div>
       </div>
