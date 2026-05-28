@@ -159,7 +159,7 @@ export default function StorePage() {
           </a>
 
           <a
-            href="https://map.naver.com"
+            href="https://m.place.naver.com/restaurant/1332162865/home"
             target="_blank"
             className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold"
           >
