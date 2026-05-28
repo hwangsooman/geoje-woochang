@@ -12,221 +12,178 @@ type Store = {
 
 type Review = {
   id: number;
+  store_id: number;
   rating: number;
   review_text: string;
   saved_reply: string | null;
-  stores: {
+  platform?: string | null;
+  stores?: {
     store_name: string;
   } | null;
 };
 
 export default function ReviewsPage() {
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [stores, setStores] = useState<Store[]>([]);
   const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null);
-  const [reviews, setReviews] = useState<Review[]>([]);
   const [filterMode, setFilterMode] = useState<"ALL" | "NEGATIVE">("ALL");
-  const [searchKeyword, setSearchKeyword] = useState("");
+  const [platformMode, setPlatformMode] = useState<"ALL" | "GOOGLE" | "NAVER" | "BAEMIN">("ALL");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-
-    const filter = params.get("filter");
-    const storeId = params.get("storeId");
-
-    if (filter === "negative") {
-      setFilterMode("NEGATIVE");
-    }
-
-    if (storeId) {
-      setSelectedStoreId(Number(storeId));
-    } else {
-      setSelectedStoreId(null);
-    }
-  }, []);
-
-  useEffect(() => {
-    const fetchStores = async () => {
-      const { data, error } = await supabase
-        .from("stores")
-        .select("id, store_name")
-        .order("id", { ascending: true });
-
-      if (error) {
-        console.error(error);
-        return;
-      }
-
-      setStores(data || []);
-    };
-
     fetchStores();
+    fetchReviews();
   }, []);
 
-  useEffect(() => {
-    const fetchReviews = async () => {
-      let query = supabase
-        .from("reviews")
-        .select(`
-          id,
-          rating,
-          review_text,
-          saved_reply,
-          stores (store_name)
-        `)
-        .order("rating", { ascending: true })
-        .order("id", { ascending: true });
+  async function fetchStores() {
+    const { data } = await supabase
+      .from("stores")
+      .select("id, store_name")
+      .order("id", { ascending: true });
 
-      if (selectedStoreId) {
-        query = query.eq("store_id", selectedStoreId);
-      }
+    setStores((data || []) as Store[]);
+  }
 
-      if (filterMode === "NEGATIVE") {
-        query = query.lte("rating", 2);
-      }
-
-      const { data, error } = await query;
-
-      if (error) {
-        console.error(error);
-        return;
-      }
-
-      setReviews((data || []) as unknown as Review[]);
-    };
-
-    fetchReviews();
-  }, [selectedStoreId, filterMode]);
-
-  const filteredReviews =
-    searchKeyword.trim() === ""
-      ? reviews
-      : reviews.filter((review) =>
-          review.review_text
-            .toLowerCase()
-            .includes(searchKeyword.toLowerCase())
-        );
-
-  return (
-    <main className="p-10 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold mb-6 text-gray-900">
-          리뷰 목록
-      </h1>
-
-      <div className="mb-6 flex flex-wrap items-center gap-4">
-        <div>
-          <label className="mr-3 font-semibold  text-gray-800 ">매장 선택:</label>
-          <select
-           className="border p-2 rounded bg-white text-gray-900"
-            value={selectedStoreId ?? "ALL"}
-            onChange={(e) => {
-              const value = e.target.value;
-              setSelectedStoreId(value === "ALL" ? null : Number(value));
-            }}
-          >
-            <option value="ALL">전체 매장</option>
-
-            {stores.map((store) => (
-              <option key={store.id} value={store.id}>
-                {store.store_name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="flex gap-2">
-          <button
-            onClick={() => setFilterMode("ALL")}
-            className={`px-4 py-2 rounded ${
-              filterMode === "ALL"
-                ? "bg-blue-600 text-white"
-                : "bg-white border"
-            }`}
-          >
-            전체 리뷰
-          </button>
-
-          <button
-            onClick={() => setFilterMode("NEGATIVE")}
-            className={`px-4 py-2 rounded ${
-              filterMode === "NEGATIVE"
-                ? "bg-red-600 text-white"
-                : "bg-white border"
-            }`}
-          >
-            부정 리뷰만
-          </button>
-        </div>
-      </div>
-
-      <div className="mb-6">
-        <input
-          type="text"
-          placeholder="리뷰 검색 (예: 불친절, 맛있어요)"
-          value={searchKeyword}
-          onChange={(e) => setSearchKeyword(e.target.value)}
-          className="border p-2 rounded w-full max-w-md"
-        />
-      </div>
-
-   
-
-{/* ⭐ 여기 교체 */}
-<button
-  disabled={loading}
-  onClick={async () => {
-    if (loading) return;
-
+  async function fetchReviews() {
     setLoading(true);
 
-    try {
-      // 1. Google 리뷰 가져오기
-      const googleRes = await fetch("/api/google/reviews");
-      const googleData = await googleRes.json();
+    const { data } = await supabase
+      .from("reviews")
+      .select("*, stores(store_name)")
+      .order("id", { ascending: false });
 
-      if (!googleRes.ok) {
-         alert(googleData.error || "Google 리뷰 가져오기 실패");
-         return;
-      }
-       // 2. 기존 collect-reviews API로 저장
-    const response = await fetch("/api/collect-reviews", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        reviews: googleData.reviews || [],
-      }),
-    });
+    setReviews((data || []) as Review[]);
+    setLoading(false);
+  }
 
-    const data = await response.json();
+  const filteredReviews = reviews.filter((review) => {
+    const storeMatch =
+      selectedStoreId === null || review.store_id === selectedStoreId;
 
-    if (!response.ok) {
-      alert(data.error || "리뷰 저장 실패");
-      return;
-      
-    }
+    const negativeMatch =
+      filterMode === "ALL" || review.rating <= 2;
 
+    const platform = review.platform || "GOOGLE";
 
-      alert(
-        `리뷰 수집 완료\n추가된 리뷰: ${data.added}개\nAI 초안 생성: ${data.aiDrafted}개\n총 리뷰: ${data.total}개`
-      );
+    const platformMatch =
+      platformMode === "ALL" || platform === platformMode;
 
-      window.location.reload();
-    } finally {
-      setLoading(false);
-    }
-  }}
-  className={`mb-6 px-4 py-2 rounded-lg text-white ${
-    loading ? "bg-gray-400" : "bg-purple-600 hover:bg-purple-700"
-  }`}
->
-  {loading ? "수집 중..." : "새 리뷰 수집하기"}
-</button>
+    return storeMatch && negativeMatch && platformMatch;
+  });
 
+  return (
+    <main className="p-4 sm:p-6 md:p-10 bg-gray-50 min-h-screen text-gray-900">
+      <h1 className="text-2xl font-bold mb-6 text-gray-900">
+        리뷰관리
+      </h1>
 
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="bg-white rounded-2xl shadow p-5 border">
+          <h2 className="text-lg font-bold text-gray-900">
+            구글 AI 자동댓글
+          </h2>
+          <p className="mt-2 text-sm text-gray-700">
+            Google 리뷰를 분석하고 AI 답글 자동화를 준비합니다.
+          </p>
+        </div>
 
-      <div className="mb-4 text-sm text-gray-600">
+        <div className="bg-white rounded-2xl shadow p-5 border">
+          <h2 className="text-lg font-bold text-gray-900">
+            네이버 반자동댓글
+          </h2>
+          <p className="mt-2 text-sm text-gray-700">
+            AI 답글 생성 후 네이버 플레이스에 복사하여 등록합니다.
+          </p>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow p-5 border">
+          <h2 className="text-lg font-bold text-gray-900">
+            배민셀프서비스 댓글
+          </h2>
+          <p className="mt-2 text-sm text-gray-700">
+            배민 리뷰 답글은 자동 또는 반자동 방식으로 확장 예정입니다.
+          </p>
+        </div>
+      </section>
+
+      <section className="bg-white rounded-2xl shadow p-5 mb-6">
+        <div className="flex flex-wrap items-center gap-4">
+          <div>
+            <label className="mr-3 font-semibold text-gray-800">
+              지점 선택:
+            </label>
+
+            <select
+              className="border p-2 rounded bg-white text-gray-900"
+              value={selectedStoreId ?? "ALL"}
+              onChange={(e) => {
+                const value = e.target.value;
+                setSelectedStoreId(value === "ALL" ? null : Number(value));
+              }}
+            >
+              <option value="ALL">전체 지점</option>
+
+              {stores.map((store) => (
+                <option key={store.id} value={store.id}>
+                  {store.store_name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="mr-3 font-semibold text-gray-800">
+              플랫폼:
+            </label>
+
+            <select
+              className="border p-2 rounded bg-white text-gray-900"
+              value={platformMode}
+              onChange={(e) =>
+                setPlatformMode(e.target.value as "ALL" | "GOOGLE" | "NAVER" | "BAEMIN")
+              }
+            >
+              <option value="ALL">전체</option>
+              <option value="GOOGLE">구글</option>
+              <option value="NAVER">네이버</option>
+              <option value="BAEMIN">배민</option>
+            </select>
+          </div>
+
+          <div className="flex gap-2">
+            <button
+              onClick={() => setFilterMode("ALL")}
+              className={`px-4 py-2 rounded ${
+                filterMode === "ALL"
+                  ? "bg-blue-600 text-white"
+                  : "bg-white border text-gray-800"
+              }`}
+            >
+              전체 리뷰
+            </button>
+
+            <button
+              onClick={() => setFilterMode("NEGATIVE")}
+              className={`px-4 py-2 rounded ${
+                filterMode === "NEGATIVE"
+                  ? "bg-red-600 text-white"
+                  : "bg-white border text-gray-800"
+              }`}
+            >
+              부정 리뷰만
+            </button>
+          </div>
+
+          <button
+            onClick={fetchReviews}
+            className="bg-gray-800 text-white px-4 py-2 rounded"
+          >
+            {loading ? "불러오는 중..." : "새로고침"}
+          </button>
+        </div>
+      </section>
+
+      <div className="mb-4 text-sm text-gray-700">
         표시 중인 리뷰: {filteredReviews.length}개
       </div>
 
@@ -234,6 +191,7 @@ export default function ReviewsPage() {
         {filteredReviews.map((review) => {
           const isSaved = Boolean(review.saved_reply);
           const isNegative = review.rating <= 2;
+          const platform = review.platform || "GOOGLE";
 
           return (
             <Link key={review.id} href={`/reviews/${review.id}`}>
@@ -242,15 +200,28 @@ export default function ReviewsPage() {
                   isNegative ? "border-red-300" : "border-transparent"
                 }`}
               >
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center justify-between gap-3 mb-2">
                   <div>
-                    <p className="font-semibold text-gray-900">⭐ {review.rating}</p>
-                    <p className="text-sm text-gray-500">
-                      {review.stores?.store_name}
+                    <p className="font-semibold text-gray-900">
+                      ⭐ {review.rating}
+                    </p>
+
+                    <p className="text-sm text-gray-600">
+                      {review.stores?.store_name || "지점명 없음"}
                     </p>
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2 justify-end">
+                    <span className="text-sm px-3 py-1 rounded-full bg-blue-100 text-blue-700">
+                      {platform === "GOOGLE"
+                        ? "구글"
+                        : platform === "NAVER"
+                        ? "네이버"
+                        : platform === "BAEMIN"
+                        ? "배민"
+                        : platform}
+                    </span>
+
                     {isNegative && (
                       <span className="text-sm px-3 py-1 rounded-full bg-red-100 text-red-700">
                         우선 대응
@@ -261,24 +232,24 @@ export default function ReviewsPage() {
                       className={`text-sm px-3 py-1 rounded-full ${
                         isSaved
                           ? "bg-green-100 text-green-700"
-                          : "bg-gray-100 text-gray-600"
+                          : "bg-gray-100 text-gray-700"
                       }`}
                     >
-                      {isSaved ? "저장됨" : "미저장"}
+                      {isSaved ? "답글 저장됨" : "미처리"}
                     </span>
                   </div>
                 </div>
 
-                <p className="text-gray-800 mt-2 leading-relaxed">
-                     {review.review_text}
-               </p>
+                <p className="mt-3 text-gray-800 leading-relaxed">
+                  {review.review_text}
+                </p>
               </div>
             </Link>
           );
         })}
 
         {filteredReviews.length === 0 && (
-          <div className="bg-white p-6 rounded-xl shadow text-gray-500">
+          <div className="bg-white p-6 rounded-xl shadow text-gray-600">
             표시할 리뷰가 없습니다.
           </div>
         )}
