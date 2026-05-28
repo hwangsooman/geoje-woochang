@@ -17,13 +17,15 @@ export default function RootLayout({
         {/* 사이드 메뉴 */}
         <aside className="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r">
           <h2 className="text-xl font-bold mb-6 px-4 pt-4 text-gray-900">
-            관리 시스템
+            AI 리뷰관리 플랫폼
             </h2>
           <nav className="flex md:flex-col overflow-x-auto gap-2 p-4 text-gray-800 font-medium">
-            <Link href="/store">홈</Link>
-            <Link href="/gallery">음식갤러리</Link>
+           
+            <Link href="/sales">영업관리</Link>
+            <Link href="/store">본점(거제)</Link>
+            <Link href="/branches">지점</Link>
             <Link href="/dashboard">대시보드</Link>
-            <Link href="/reviews">리뷰 목록</Link>
+            <Link href="/reviews">리뷰관리</Link>
             <Link href="/settings">설정</Link>
           </nav>
         </aside>
