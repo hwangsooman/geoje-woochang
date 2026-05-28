@@ -21,7 +21,13 @@ export default function RootLayout({
             </h2>
           <nav className="flex md:flex-col overflow-x-auto gap-2 p-4 text-gray-800 font-medium">
            
-            <Link href="/sales">영업관리</Link>
+            <a
+                href="https://www.우창해장국.com"
+                target="_blank"
+                rel="noopener noreferrer"
+             >
+                   영업관리
+             </a>
             <Link href="/store">본점(거제)</Link>
             <Link href="/branches">지점</Link>
             <Link href="/dashboard">대시보드</Link>
