@@ -87,6 +87,16 @@ export default function ReviewDetailPage() {
     alert("답글이 저장되었습니다.");
     fetchReview();
   }
+  
+  async function copyReply() {
+   if (!reply) {
+      alert("복사할 답글이 없습니다.");
+      return;
+   }
+
+    await navigator.clipboard.writeText(reply);
+    alert("답글이 복사되었습니다.");
+  }
 
   if (loading) {
     return (
