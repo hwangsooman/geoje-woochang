@@ -177,21 +177,28 @@ export default function ReviewDetailPage() {
         </h2>
 
         <div className="flex flex-wrap gap-2 mb-4">
-          <button
-            onClick={generateAiReply}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold"
-          >
-            AI 답글 생성
-          </button>
+         <button
+           onClick={generateAiReply}
+           className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold"
+         >
+             AI 답글 생성
+        </button>
 
-          <button
-            onClick={saveReply}
-            disabled={saving}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold disabled:opacity-50"
-          >
-            {saving ? "저장 중..." : "답글 저장"}
-          </button>
-        </div>
+        <button
+          onClick={saveReply}
+          disabled={saving}
+          className="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold disabled:opacity-50"
+       >
+         {saving ? "저장 중..." : "답글 저장"}
+       </button>
+
+       <button
+         onClick={copyReply}
+         className="bg-gray-800 text-white px-4 py-2 rounded-lg font-semibold"
+      >
+          답글 복사
+      </button>
+     </div>
 
         <textarea
           value={reply}
