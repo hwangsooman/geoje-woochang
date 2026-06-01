@@ -50,21 +50,32 @@ export default function ReviewDetailPage() {
   }
 
   function generateAiReply() {
-    if (!review) return;
+  if (!review) return;
 
-    const storeName = review.stores?.store_name || "우창해장국";
-    const isNegative = review.rating <= 2;
+  const storeName = review.stores?.store_name || "우창해장국";
+  const isNegative = review.rating <= 2;
 
-    if (isNegative) {
-      setReply(
-        `${storeName}을 이용해 주셨는데 만족을 드리지 못해 죄송합니다. 남겨주신 의견은 매장 운영에 바로 공유하여 같은 불편이 반복되지 않도록 개선하겠습니다. 소중한 의견 남겨주셔서 감사합니다.`
-      );
-    } else {
-      setReply(
-        `${storeName}을 이용해 주시고 소중한 리뷰를 남겨주셔서 감사합니다. 앞으로도 정성껏 준비한 음식과 친절한 서비스로 만족을 드릴 수 있도록 노력하겠습니다.`
-      );
-    }
-  }
+  const negativeReplies = [
+    `${storeName}을 이용해 주셨는데 만족을 드리지 못해 죄송합니다. 남겨주신 의견은 매장 운영에 바로 공유하여 같은 불편이 반복되지 않도록 개선하겠습니다. 소중한 의견 남겨주셔서 감사합니다.`,
+
+    `불편을 드려 진심으로 죄송합니다. 말씀해 주신 부분은 매장에서 꼼꼼히 확인하고, 같은 문제가 반복되지 않도록 서비스와 운영을 개선하겠습니다.`,
+
+    `소중한 의견 남겨주셔서 감사합니다. 이용 과정에서 불편을 느끼셨다면 진심으로 죄송합니다. 더 나은 음식과 서비스로 보답할 수 있도록 노력하겠습니다.`,
+  ];
+
+  const positiveReplies = [
+    `${storeName}을 이용해 주시고 소중한 리뷰를 남겨주셔서 감사합니다. 앞으로도 정성껏 준비한 음식과 친절한 서비스로 만족을 드릴 수 있도록 노력하겠습니다.`,
+
+    `좋은 리뷰 남겨주셔서 감사합니다. 고객님의 따뜻한 말씀은 직원들에게 큰 힘이 됩니다. 다음 방문에도 만족스러운 식사가 되도록 최선을 다하겠습니다.`,
+
+    `${storeName}을 찾아주셔서 감사합니다. 맛있게 드셨다니 정말 기쁩니다. 앞으로도 변함없는 맛과 정성으로 보답하겠습니다.`,
+  ];
+
+  const replies = isNegative ? negativeReplies : positiveReplies;
+  const randomReply = replies[Math.floor(Math.random() * replies.length)];
+
+  setReply(randomReply);
+}
 
   async function saveReply() {
     if (!review) return;
@@ -187,28 +198,37 @@ export default function ReviewDetailPage() {
         </h2>
 
         <div className="flex flex-wrap gap-2 mb-4">
-         <button
-           onClick={generateAiReply}
-           className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold"
-         >
-             AI 답글 생성
-        </button>
 
-        <button
-          onClick={saveReply}
-          disabled={saving}
-          className="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold disabled:opacity-50"
-       >
-         {saving ? "저장 중..." : "답글 저장"}
-       </button>
+          <button
+            onClick={generateAiReply}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold"
+          >
+              AI 답글 생성
+          </button>
 
-       <button
-         onClick={copyReply}
-         className="bg-gray-800 text-white px-4 py-2 rounded-lg font-semibold"
-      >
-          답글 복사
-      </button>
-     </div>
+          <button
+              onClick={generateAiReply}
+              className="bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold"
+          >
+              다른 답글 재생성
+          </button>
+
+          <button
+              onClick={saveReply}
+              disabled={saving}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold"
+           >
+               {saving ? "저장 중..." : "답글 저장"}
+           </button>
+
+           <button
+                onClick={copyReply}
+                className="bg-gray-800 text-white px-4 py-2 rounded-lg font-semibold"
+            >
+                답글 복사
+            </button>
+
+        </div>
 
         <textarea
           value={reply}
