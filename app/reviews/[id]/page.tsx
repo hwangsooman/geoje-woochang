@@ -1,185 +1,243 @@
 
 "use client";
-
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
 type Review = {
   id: number;
+  store_id: number;
   rating: number;
   review_text: string;
-  ai_reply: string | null;
   saved_reply: string | null;
-  status: string | null;
-  stores: {
+  platform?: string | null;
+  stores?: {
     store_name: string;
   } | null;
 };
 
 export default function ReviewDetailPage() {
   const params = useParams();
-  const id = Number(params.id);
+  const reviewId = Number(params.id);
 
   const [review, setReview] = useState<Review | null>(null);
   const [reply, setReply] = useState("");
-  const [savedMessage, setSavedMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    const fetchReview = async () => {
-      const { data, error } = await supabase
-        .from("reviews")
-        .select(`
-          id,
-          rating,
-          review_text,
-          ai_reply,
-          saved_reply,
-          status,
-          stores (
-            store_name
-          )
-        `)
-        .eq("id", id)
-        .single();
-
-      if (error) {
-        console.error(error);
-        setIsLoading(false);
-        return;
-      }
-
-      setReview(data as unknown as Review);
-      setReply(data.saved_reply || data.ai_reply || "");
-      setIsLoading(false);
-    };
-
     fetchReview();
-  }, [id]);
+  }, []);
 
-  const generateAiReply = async () => {
-    if (!review) return;
+  async function fetchReview() {
+    setLoading(true);
 
-    try {
-      setIsGenerating(true);
+    const { data, error } = await supabase
+      .from("reviews")
+      .select("*, stores(store_name)")
+      .eq("id", reviewId)
+      .single();
 
-      const response = await fetch("/api/generate-reply", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          reviewText: review.review_text,
-          rating: review.rating,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        alert(data.error || "AI 답글 생성에 실패했습니다.");
-        return;
-      }
-
-      setReply(data.reply);
-
-      await supabase
-        .from("reviews")
-        .update({
-          ai_reply: data.reply,
-          status: "DRAFTED",
-        })
-        .eq("id", review.id);
-    } catch (error) {
-      alert("AI 답글 생성 중 오류가 발생했습니다.");
-    } finally {
-      setIsGenerating(false);
+    if (error) {
+      console.error(error);
     }
-  };
 
-  const handleSave = async () => {
+    const reviewData = data as Review | null;
+    setReview(reviewData);
+    setReply(reviewData?.saved_reply || "");
+    setLoading(false);
+  }
+
+  function generateAiReply() {
     if (!review) return;
+
+    const storeName = review.stores?.store_name || "우창해장국";
+    const isNegative = review.rating <= 2;
+
+    if (isNegative) {
+      setReply(
+        `${storeName}을 이용해 주셨는데 만족을 드리지 못해 죄송합니다. 남겨주신 의견은 매장 운영에 바로 공유하여 같은 불편이 반복되지 않도록 개선하겠습니다. 소중한 의견 남겨주셔서 감사합니다.`
+      );
+    } else {
+      setReply(
+        `${storeName}을 이용해 주시고 소중한 리뷰를 남겨주셔서 감사합니다. 앞으로도 정성껏 준비한 음식과 친절한 서비스로 만족을 드릴 수 있도록 노력하겠습니다.`
+      );
+    }
+  }
+
+  async function saveReply() {
+    if (!review) return;
+
+    setSaving(true);
 
     const { error } = await supabase
       .from("reviews")
-      .update({
-        saved_reply: reply,
-        status: "SAVED",
-      })
+      .update({ saved_reply: reply })
       .eq("id", review.id);
 
+    setSaving(false);
+
     if (error) {
-      alert("답글 저장에 실패했습니다.");
+      alert("답글 저장 중 오류가 발생했습니다.");
+      console.error(error);
       return;
     }
 
-    setSavedMessage("답글이 DB에 저장되었습니다.");
-
-    setTimeout(() => {
-      setSavedMessage("");
-    }, 2000);
-  };
-
-  if (isLoading) {
-    return <main className="p-10">불러오는 중...</main>;
+    alert("답글이 저장되었습니다.");
+    fetchReview();
   }
 
-  if (!review) {
+  if (loading) {
     return (
-      <main className="p-10">
-        <h1 className="text-2xl font-bold">리뷰를 찾을 수 없습니다.</h1>
+      <main className="p-4 sm:p-6 md:p-10 bg-gray-50 min-h-screen text-gray-900">
+        <p>리뷰를 불러오는 중입니다...</p>
       </main>
     );
   }
 
+  if (!review) {
+    return (
+      <main className="p-4 sm:p-6 md:p-10 bg-gray-50 min-h-screen text-gray-900">
+        <p>리뷰를 찾을 수 없습니다.</p>
+
+        <Link
+          href="/reviews"
+          className="inline-block mt-4 bg-gray-800 text-white px-4 py-2 rounded-lg"
+        >
+          리뷰관리로 돌아가기
+        </Link>
+      </main>
+    );
+  }
+
+  const platform = review.platform || "GOOGLE";
+  const isNegative = review.rating <= 2;
+
   return (
-    <main className="p-10 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold mb-6">리뷰 상세</h1>
-
-      <div className="space-y-6 max-w-3xl">
-        <section className="bg-white rounded-2xl shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">원본 리뷰</h2>
-          <p className="text-sm text-gray-500 mb-2">
-            매장: {review.stores?.store_name || "매장명 없음"}
-          </p>
-          <p className="text-lg font-semibold mb-2">⭐ {review.rating}</p>
-          <p className="text-gray-700 text-lg">{review.review_text}</p>
-        </section>
-
-        <section className="bg-white rounded-2xl shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">AI 답글 초안</h2>
-
-          <textarea
-            className="w-full border border-gray-300 rounded-lg p-3 h-40 text-gray-700"
-            value={reply}
-            onChange={(e) => setReply(e.target.value)}
-            placeholder="AI 답글을 생성하거나 직접 입력하세요."
-          />
-
-          <div className="mt-4 flex items-center gap-3">
-            <button
-              onClick={handleSave}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-            >
-              답글 저장
-            </button>
-
-            <button
-              onClick={generateAiReply}
-              disabled={isGenerating}
-              className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800 disabled:bg-gray-400"
-            >
-              {isGenerating ? "AI 생성 중..." : "진짜 AI 답글 생성"}
-            </button>
-
-            {savedMessage && (
-              <span className="text-green-600 font-medium">{savedMessage}</span>
-            )}
-          </div>
-        </section>
+    <main className="p-4 sm:p-6 md:p-10 bg-gray-50 min-h-screen text-gray-900">
+      <div className="mb-6">
+        <Link href="/reviews" className="text-blue-600 hover:underline">
+          ← 리뷰관리로 돌아가기
+        </Link>
       </div>
+
+      <h1 className="text-2xl font-bold mb-6 text-gray-900">
+        AI 리뷰 응답관리
+      </h1>
+
+      <section className="bg-white rounded-2xl shadow p-6 border max-w-4xl">
+        <div className="flex flex-wrap items-center gap-2 mb-4">
+          <span className="text-sm px-3 py-1 rounded-full bg-blue-100 text-blue-700">
+            {platform === "GOOGLE"
+              ? "구글"
+              : platform === "NAVER"
+              ? "네이버"
+              : platform === "BAEMIN"
+              ? "배민"
+              : platform}
+          </span>
+
+          {isNegative && (
+            <span className="text-sm px-3 py-1 rounded-full bg-red-100 text-red-700">
+              우선 대응 필요
+            </span>
+          )}
+
+          {review.saved_reply && (
+            <span className="text-sm px-3 py-1 rounded-full bg-green-100 text-green-700">
+              답글 저장됨
+            </span>
+          )}
+        </div>
+
+        <div className="space-y-3">
+          <p className="text-gray-700">
+            <span className="font-semibold text-gray-900">매장명:</span>{" "}
+            {review.stores?.store_name || "매장명 없음"}
+          </p>
+
+          <p className="text-gray-700">
+            <span className="font-semibold text-gray-900">별점:</span>{" "}
+            ⭐ {review.rating}
+          </p>
+
+          <div className="mt-4 bg-gray-50 rounded-xl p-4 border">
+            <p className="font-semibold text-gray-900 mb-2">고객 리뷰</p>
+            <p className="text-gray-800 leading-relaxed">
+              {review.review_text}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white rounded-2xl shadow p-6 border max-w-4xl mt-6">
+        <h2 className="text-xl font-bold text-gray-900 mb-4">
+          AI 답글 생성
+        </h2>
+
+        <div className="flex flex-wrap gap-2 mb-4">
+          <button
+            onClick={generateAiReply}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold"
+          >
+            AI 답글 생성
+          </button>
+
+          <button
+            onClick={saveReply}
+            disabled={saving}
+            className="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold disabled:opacity-50"
+          >
+            {saving ? "저장 중..." : "답글 저장"}
+          </button>
+        </div>
+
+        <textarea
+          value={reply}
+          onChange={(e) => setReply(e.target.value)}
+          rows={8}
+          className="w-full border rounded-xl p-4 bg-white text-gray-900 placeholder:text-gray-400"
+          placeholder="AI 답글을 생성하거나 직접 입력하세요."
+        />
+
+        <div className="mt-4 bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-sm text-yellow-800">
+          <p className="font-semibold mb-1">운영 안내</p>
+          <p>
+            구글은 향후 API 승인 후 자동 등록을 목표로 하고, 네이버와 배민은
+            우선 AI 답글 생성 후 복사하여 등록하는 반자동 방식으로 운영합니다.
+          </p>
+        </div>
+      </section>
+
+      <section className="bg-white rounded-2xl shadow p-6 border max-w-4xl mt-6">
+        <h2 className="text-xl font-bold text-gray-900 mb-4">
+          플랫폼별 등록 방식
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="border rounded-xl p-4 bg-gray-50">
+            <h3 className="font-bold text-gray-900">구글</h3>
+            <p className="text-sm text-gray-700 mt-2">
+              Google Business Profile API 승인 후 AI 자동댓글 등록 예정
+            </p>
+          </div>
+
+          <div className="border rounded-xl p-4 bg-gray-50">
+            <h3 className="font-bold text-gray-900">네이버</h3>
+            <p className="text-sm text-gray-700 mt-2">
+              AI 답글 생성 후 네이버 플레이스에 복사 등록
+            </p>
+          </div>
+
+          <div className="border rounded-xl p-4 bg-gray-50">
+            <h3 className="font-bold text-gray-900">배민</h3>
+            <p className="text-sm text-gray-700 mt-2">
+              배민셀프서비스에 자동 또는 반자동 등록 구조로 확장 예정
+            </p>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
