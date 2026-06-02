@@ -1,53 +1,41 @@
-const branches = [
-  {
-    name: "거제본점",
-    address: "경남 거제시",
-    phone: "055-000-0000",
-    image: "/store/main.jpg",
-    googleMap: "https://www.google.com/maps",
-    naverMap: "https://map.naver.com",
-    status: "운영중",
-  },
-  {
-    name: "부산점",
-    address: "부산광역시",
-    phone: "준비중",
-    image: "/store/food1.jpg",
-    googleMap: "https://www.google.com/maps",
-    naverMap: "https://map.naver.com",
-    status: "정보 준비중",
-  },
-  {
-    name: "창원점",
-    address: "경남 창원시",
-    phone: "준비중",
-    image: "/store/food2.jpg",
-    googleMap: "https://www.google.com/maps",
-    naverMap: "https://map.naver.com",
-    status: "정보 준비중",
-  },
-];
+const branches = Array.from({ length: 17 }, (_, index) => {
+  const imageNumber = index + 3;
+
+  return {
+    id: imageNumber,
+    name: `지점 ${index + 1}`,
+    address: "주소 입력 예정",
+    phone: "전화번호 입력 예정",
+    image: `/branches/image${imageNumber}.png`,
+    googleMap: "#",
+    naverMap: "#",
+    status: "정보 입력 예정",
+  };
+});
 
 export default function BranchesPage() {
   return (
     <main className="p-4 sm:p-6 md:p-10 bg-gray-50 min-h-screen text-gray-900">
-      <h1 className="text-3xl font-bold mb-3">지점관리</h1>
+      <h1 className="text-3xl font-bold mb-3 text-gray-900">
+        지점관리
+      </h1>
 
       <p className="text-gray-700 mb-8">
         본점에서 전국 지점을 통합 관리하기 위한 화면입니다.
-        현재는 일부 지점 정보를 중심으로 구성하고, 나머지 지점은 추후 추가 예정입니다.
+        현재는 지점 사진을 우선 배치하고, 지점명·주소·전화번호는 추후
+        본사 자료 확인 후 입력할 예정입니다.
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {branches.map((branch) => (
           <div
-            key={branch.name}
+            key={branch.id}
             className="bg-white rounded-2xl shadow overflow-hidden border"
           >
             <img
               src={branch.image}
               alt={branch.name}
-              className="w-full h-48 object-cover"
+              className="w-full h-56 object-cover"
             />
 
             <div className="p-5">
@@ -92,7 +80,7 @@ export default function BranchesPage() {
                   네이버지도
                 </a>
 
-                {branch.phone !== "준비중" && (
+                {branch.phone !== "전화번호 입력 예정" && (
                   <a
                     href={`tel:${branch.phone.replaceAll("-", "")}`}
                     className="bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-semibold"
@@ -112,11 +100,11 @@ export default function BranchesPage() {
         </h2>
 
         <ul className="list-disc pl-5 text-gray-700 space-y-2">
-          <li>20개 지점 전체 등록</li>
-          <li>지점별 구글 리뷰 연결</li>
-          <li>지점별 네이버 플레이스 연결</li>
-          <li>지점별 배민셀프서비스 리뷰관리 연결</li>
-          <li>본점 관리자에서 지점 정보 수정 기능 추가</li>
+          <li>지점명, 주소, 전화번호 입력</li>
+          <li>지점별 구글지도 링크 연결</li>
+          <li>지점별 네이버지도 링크 연결</li>
+          <li>지점별 리뷰 현황 연결</li>
+          <li>구글 AI 자동댓글 및 네이버/배민 반자동댓글 연동</li>
         </ul>
       </section>
     </main>
