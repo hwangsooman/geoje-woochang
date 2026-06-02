@@ -199,6 +199,23 @@ export default function ReviewDetailPage() {
           AI 답글 생성
         </h2>
 
+        <div className="mb-4">
+         <label className="block mb-2 font-semibold text-gray-900">
+           답글 스타일 선택
+         </label>
+
+         <select
+           value={replyStyle}
+           onChange={(e) => setReplyStyle(e.target.value)}
+           className="border rounded-lg p-2 bg-white text-gray-900"
+         >
+          <option value="정중형">정중형</option>
+          <option value="친근형">친근형</option>
+          <option value="사과형">사과형</option>
+          <option value="감사형">감사형</option>
+         </select>
+       </div>
+
         <div className="flex flex-wrap gap-2 mb-4">
 
           <button
