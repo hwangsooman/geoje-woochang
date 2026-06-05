@@ -213,6 +213,7 @@ export default function ReviewDetailPage() {
           <option value="친근형">친근형</option>
           <option value="사과형">사과형</option>
           <option value="감사형">감사형</option>
+          <option value="우창형">우창형</option>
          </select>
        </div>
 
