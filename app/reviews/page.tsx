@@ -27,7 +27,7 @@ export default function ReviewsPage() {
   const [stores, setStores] = useState<Store[]>([]);
   const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null);
   const [filterMode, setFilterMode] = useState<"ALL" | "NEGATIVE">("ALL");
-  const [platformMode, setPlatformMode] = useState<"ALL" | "GOOGLE" | "NAVER" | "BAEMIN">("ALL");
+  const [platformMode, setPlatformMode] = useState<"ALL" | "GOOGLE" | "NAVER" | "BAEMIN" | "COUPANG">("ALL");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -140,13 +140,14 @@ export default function ReviewsPage() {
               className="border p-2 rounded bg-white text-gray-900"
               value={platformMode}
               onChange={(e) =>
-                setPlatformMode(e.target.value as "ALL" | "GOOGLE" | "NAVER" | "BAEMIN")
+                setPlatformMode( e.target.value as "ALL" | "GOOGLE" | "NAVER" | "BAEMIN" | "COUPANG")
               }
             >
               <option value="ALL">전체</option>
               <option value="GOOGLE">구글</option>
               <option value="NAVER">네이버</option>
               <option value="BAEMIN">배민</option>
+              <option value="COUPANG">쿠팡이츠</option>
             </select>
           </div>
 
@@ -214,12 +215,14 @@ export default function ReviewsPage() {
                   <div className="flex flex-wrap gap-2 justify-end">
                     <span className="text-sm px-3 py-1 rounded-full bg-blue-100 text-blue-700">
                       {platform === "GOOGLE"
-                        ? "구글"
-                        : platform === "NAVER"
-                        ? "네이버"
-                        : platform === "BAEMIN"
-                        ? "배민"
-                        : platform}
+                         ? "구글"
+                         : platform === "NAVER"
+                         ? "네이버"
+                         : platform === "BAEMIN"
+                         ? "배민"
+                         : platform === "COUPANG"
+                         ? "쿠팡이츠"
+                         : platform}
                     </span>
 
                     {isNegative && (
