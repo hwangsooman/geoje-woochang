@@ -110,6 +110,20 @@ export default function ReviewDetailPage() {
     await navigator.clipboard.writeText(reply);
     alert("답글이 복사되었습니다.");
   }
+   // 여기부터 추가
+function openNaverPlace() {
+  window.open("https://smartplace.naver.com", "_blank");
+}
+
+function openBaeminSelfService() {
+  window.open("https://self.baemin.com", "_blank");
+}
+
+function openCoupangEatsStore() {
+  window.open("https://store.coupangeats.com", "_blank");
+}
+// 여기까지 추가
+
 
   if (loading) {
     return (
@@ -248,6 +262,39 @@ export default function ReviewDetailPage() {
                 답글 복사
             </button>
 
+            <div className="mt-4 border-t pt-4">
+              <p className="font-semibold text-gray-900 mb-3">
+                 플랫폼 바로가기
+              </p>
+
+            <div className="flex flex-wrap gap-2">
+             <button
+                onClick={openNaverPlace}
+                className="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold"
+             >
+                 네이버
+             </button>
+
+             <button
+                  onClick={openBaeminSelfService}
+                  className="bg-cyan-600 text-white px-4 py-2 rounded-lg font-semibold"
+             >
+                 배민
+             </button>
+
+            <button
+                onClick={openCoupangEatsStore}
+                className="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold"
+             >
+                  쿠팡이츠
+             </button>
+           </div>
+
+            <p className="mt-2 text-sm text-gray-600">
+               AI 답글 생성 → 복사 → 플랫폼 붙여넣기
+            </p>
+         </div>
+           
         </div>
 
         <textarea
