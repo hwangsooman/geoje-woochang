@@ -13,9 +13,7 @@ const branches = [
   { name: "이천1호점", address: "경기도 이천시 부발읍 무촌로151번길 18", image: "/branches/image14.png" },
   { name: "전주점", address: "전북특별자치도 전주시 덕진구 떡전로6-1", image: "/branches/image15.png" },
   { name: "군산 조촌점", address: "전북특별자치도 군산시 부골2길 47-4", image: "/branches/image16.png" },
-  { name: "김포점", address: "경기도 김포시 김포한강1로 77-29 (장기동) 1동 101호", image: "/branches/image17.png" },
-  { name: "원주점", address: "강원특별자치도 원주시 라옹정길 8 (관설동)", image: "/branches/image18.png" },
-  { name: "원주문막점", address: "강원특별자치도 원주시 문막읍 건등로 30 (건등리) 2층", image: "/branches/image19.png" },
+ 
 ];
 
 function getNaverMapUrl(name: string, address: string) {
