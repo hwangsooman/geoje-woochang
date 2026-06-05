@@ -35,7 +35,7 @@ export default function BranchesPage() {
             <img
               src={branch.image}
               alt={branch.name}
-              className="w-full h-64 object-contain bg-gray-100"
+              className="w-full h-72 object-contain bg-white"
             />
 
             <div className="p-5">
