@@ -17,6 +17,7 @@ type Review = {
   review_text: string;
   saved_reply: string | null;
   platform?: string | null;
+  status?: string | null; 
   stores?: {
     store_name: string;
   } | null;
@@ -190,7 +191,7 @@ export default function ReviewsPage() {
 
       <div className="space-y-4 max-w-3xl">
         {filteredReviews.map((review) => {
-          const isSaved = Boolean(review.saved_reply);
+          const isCompleted = review.status === "completed";
           const isNegative = review.rating <= 2;
           const platform = review.platform || "GOOGLE";
 
@@ -233,12 +234,12 @@ export default function ReviewsPage() {
 
                     <span
                       className={`text-sm px-3 py-1 rounded-full ${
-                        isSaved
-                          ? "bg-green-100 text-green-700"
-                          : "bg-gray-100 text-gray-700"
-                      }`}
+                          review.status === "completed"
+                           ? "bg-green-100 text-green-700"
+                         : "bg-gray-100 text-gray-700"
+                     }`}
                     >
-                      {isSaved ? "답글 저장됨" : "미처리"}
+                      {review.status === "completed" ? "답글완료" : "미처리"}
                     </span>
                   </div>
                 </div>
