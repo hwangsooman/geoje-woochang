@@ -27,7 +27,9 @@ export default function ReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [stores, setStores] = useState<Store[]>([]);
   const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null);
-  const [filterMode, setFilterMode] = useState<"ALL" | "NEGATIVE">("ALL");
+  const [filterMode, setFilterMode] = useState<
+      "ALL" | "NEGATIVE" | "PENDING"
+   >("ALL");
   const [platformMode, setPlatformMode] = useState<"ALL" | "GOOGLE" | "NAVER" | "BAEMIN" | "COUPANG">("ALL");
   const [loading, setLoading] = useState(false);
 
