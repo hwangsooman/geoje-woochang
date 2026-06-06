@@ -61,15 +61,21 @@ export default function ReviewsPage() {
     const storeMatch =
       selectedStoreId === null || review.store_id === selectedStoreId;
 
-    const negativeMatch =
-      filterMode === "ALL" || review.rating <= 2;
+    const filterMatch =
+       filterMode === "ALL"
+        ? true
+        : filterMode === "NEGATIVE"
+        ? review.rating <= 2
+        : filterMode === "PENDING"
+        ? review.status?.toLowerCase().trim() !== "completed"
+        : true;
 
     const platform = review.platform || "GOOGLE";
 
     const platformMatch =
       platformMode === "ALL" || platform === platformMode;
 
-    return storeMatch && negativeMatch && platformMatch;
+    return storeMatch && filterMatch && platformMatch;
   });
 
   return (
@@ -174,6 +180,18 @@ export default function ReviewsPage() {
             >
               부정 리뷰만
             </button>
+            <button
+                onClick={() => setFilterMode("PENDING")}
+                className={`px-4 py-2 rounded ${
+                    filterMode === "PENDING"
+                   ? "bg-orange-600 text-white"
+                   : "bg-white border text-gray-800"
+                }`}
+             >
+               미처리 리뷰
+             </button>
+
+
           </div>
 
           <button
@@ -233,13 +251,15 @@ export default function ReviewsPage() {
                     )}
 
                     <span
-                      className={`text-sm px-3 py-1 rounded-full ${
-                          review.status === "completed"
+                       className={`text-sm px-3 py-1 rounded-full ${
+                         review.status?.toLowerCase().trim() === "completed"
                            ? "bg-green-100 text-green-700"
-                         : "bg-gray-100 text-gray-700"
-                     }`}
+                           : "bg-gray-100 text-gray-700"
+                        }`}
                     >
-                      {review.status === "completed" ? "답글완료" : "미처리"}
+                       {review.status?.toLowerCase().trim() === "completed"
+                         ? "답글완료"
+                         : "미처리"}
                     </span>
                   </div>
                 </div>
