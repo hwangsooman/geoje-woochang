@@ -86,7 +86,11 @@ export default function ReviewDetailPage() {
 
     const { error } = await supabase
       .from("reviews")
-      .update({ saved_reply: reply })
+      .update({
+          saved_reply: reply,
+          status: "completed",
+       })
+
       .eq("id", review.id);
 
     setSaving(false);
