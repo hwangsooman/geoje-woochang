@@ -28,8 +28,8 @@ export default function ReviewsPage() {
   const [stores, setStores] = useState<Store[]>([]);
   const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null);
   const [filterMode, setFilterMode] = useState<
-      "ALL" | "NEGATIVE" | "PENDING"
-   >("ALL");
+     "ALL" | "NEGATIVE" | "PENDING" | "COMPLETED"
+  >("ALL");
   const [platformMode, setPlatformMode] = useState<"ALL" | "GOOGLE" | "NAVER" | "BAEMIN" | "COUPANG">("ALL");
   const [loading, setLoading] = useState(false);
 
@@ -65,12 +65,14 @@ export default function ReviewsPage() {
 
     const filterMatch =
        filterMode === "ALL"
-        ? true
-        : filterMode === "NEGATIVE"
-        ? review.rating <= 2
-        : filterMode === "PENDING"
-        ? review.status?.toLowerCase().trim() !== "completed"
-        : true;
+         ? true
+         : filterMode === "NEGATIVE"
+         ? review.rating <= 2
+         : filterMode === "PENDING"
+         ? review.status?.toLowerCase().trim() !== "completed"
+         : filterMode === "COMPLETED"
+         ? review.status?.toLowerCase().trim() === "completed"
+         : true;
 
     const platform = review.platform || "GOOGLE";
 
@@ -192,6 +194,16 @@ export default function ReviewsPage() {
              >
                미처리 리뷰
              </button>
+             <button
+                onClick={() => setFilterMode("COMPLETED")}
+                className={`px-4 py-2 rounded ${
+                filterMode === "COMPLETED"
+                  ? "bg-green-600 text-white"
+                  : "bg-white border text-gray-800"
+               }`}
+             >
+              답글완료 리뷰
+            </button>
 
 
           </div>
