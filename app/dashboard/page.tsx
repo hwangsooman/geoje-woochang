@@ -54,6 +54,7 @@ export default async function DashboardPage() {
         negative: 0,
         saved: 0,
         pending: 0,
+        completed: 0,
       };
     }
 
@@ -63,12 +64,11 @@ export default async function DashboardPage() {
       acc[storeId].negative += 1;
     }
 
-    if (review.saved_reply) {
-      acc[storeId].saved += 1;
+    if (review.status?.toLowerCase().trim() === "completed") {
+      acc[storeId].completed += 1;
     } else {
-      acc[storeId].pending += 1;
-    }
-
+        acc[storeId].pending += 1;
+   }
     return acc;
   }, {} as Record<number, {
     storeId: number;
@@ -77,6 +77,8 @@ export default async function DashboardPage() {
     negative: number;
     saved: number;
     pending: number;
+    completed: number;
+
   }>);
 
   const storeStatsList = Object.values(storeStats);
@@ -171,6 +173,9 @@ export default async function DashboardPage() {
               <th className="text-center p-3">부정 리뷰</th>
               <th className="text-center p-3">저장된 답글</th>
               <th className="text-center p-3">미처리 리뷰</th>
+              <th className="text-center p-3">답글완료</th>
+              <th className="text-center p-3">미처리</th>
+              <th className="text-center p-3">답글률</th>
             </tr>
           </thead>
 
@@ -188,8 +193,15 @@ export default async function DashboardPage() {
 
                 <td className="p-3 text-center text-gray-900">{store.total}</td>
                 <td className="p-3 text-center text-red-600">{store.negative}</td>
-                <td className="p-3 text-center text-green-600">{store.saved}</td>
+                <td className="p-3 text-center text-green-600">{store.completed}</td>
                 <td className="p-3 text-center text-orange-600">{store.pending}</td>
+                <td className="p-3 text-center text-blue-600">
+                    {store.total === 0
+                       ? 0
+                       : Math.round((store.completed / store.total) * 100)}
+                     %
+                </td>
+
               </tr>
             ))}
           </tbody>
