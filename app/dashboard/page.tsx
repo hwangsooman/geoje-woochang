@@ -9,6 +9,7 @@ type Review = {
   stores?: {
     store_name: string;
   } | null;
+  status?: string | null;
 };
 
 export default async function DashboardPage() {
@@ -28,10 +29,19 @@ export default async function DashboardPage() {
   const reviewList = (reviews || []) as Review[];
 
   const totalReviews = reviewList.length;
-  const negativeReviews = reviewList.filter((review) => review.rating <= 2).length;
-  const savedReplies = reviewList.filter((review) => Boolean(review.saved_reply)).length;
-  const pendingReviews = totalReviews - savedReplies;
 
+  const negativeReviews = reviewList.filter(
+       (review) => review.rating <= 2
+   ).length;
+
+  const completedReviews = reviewList.filter(
+       (review) => review.status?.toLowerCase().trim() === "completed"
+   ).length;
+
+  const pendingReviews = totalReviews - completedReviews;
+
+  const replyRate =
+     totalReviews === 0 ? 0 : Math.round((completedReviews / totalReviews) * 100);
   const storeStats = reviewList.reduce((acc, review) => {
     const storeId = review.store_id;
     const storeName = review.stores?.store_name || "매장명 없음";
@@ -77,7 +87,7 @@ export default async function DashboardPage() {
         대시보드
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
         <div className="bg-white rounded-2xl shadow p-6">
           <p className="text-gray-600 font-medium">전체 리뷰</p>
           <p className="text-3xl font-bold mt-2 text-gray-900">{totalReviews}</p>
@@ -89,14 +99,23 @@ export default async function DashboardPage() {
         </div>
 
         <div className="bg-white rounded-2xl shadow p-6">
-          <p className="text-gray-600 font-medium">저장된 답글</p>
-          <p className="text-3xl font-bold mt-2 text-green-600">{savedReplies}</p>
+          <p className="text-gray-600 font-medium">답글완료</p>
+          <p className="text-3xl font-bold mt-2 text-green-600">
+               {completedReviews}
+          </p>
         </div>
 
         <div className="bg-white rounded-2xl shadow p-6">
           <p className="text-gray-600 font-medium">미처리 리뷰</p>
           <p className="text-3xl font-bold mt-2 text-orange-600">{pendingReviews}</p>
         </div>
+        <div className="bg-white rounded-2xl shadow p-6">
+            <p className="text-gray-600 font-medium">답글률</p>
+            <p className="text-3xl font-bold mt-2 text-blue-600">
+                 {replyRate}%
+            </p>
+         </div>
+
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
@@ -128,10 +147,9 @@ export default async function DashboardPage() {
         </h2>
 
         <p className="text-gray-700">
-          현재 전체 리뷰 {totalReviews}건 중 부정 리뷰는 {negativeReviews}건이며,
-          답글 저장이 완료된 리뷰는 {savedReplies}건입니다.
+            현재 전체 리뷰 {totalReviews}건 중 부정 리뷰는 {negativeReviews}건이며,
+            답글완료 리뷰는 {completedReviews}건입니다.
         </p>
-
         <Link
           href="/reviews?filter=negative"
           className="inline-block mt-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
