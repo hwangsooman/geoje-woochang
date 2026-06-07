@@ -6,6 +6,7 @@ type Review = {
   rating: number;
   review_text: string;
   saved_reply: string | null;
+   platform?: string | null;
   stores?: {
     store_name: string;
   } | null;
@@ -42,6 +43,23 @@ export default async function DashboardPage() {
 
   const replyRate =
      totalReviews === 0 ? 0 : Math.round((completedReviews / totalReviews) * 100);
+     const googleCount = reviewList.filter(
+        (review) => review.platform === "GOOGLE"
+     ).length;
+
+     const naverCount = reviewList.filter(
+         (review) => review.platform === "NAVER"
+     ).length;
+
+     const baeminCount = reviewList.filter(
+         (review) => review.platform === "BAEMIN"
+     ).length;
+
+     const coupangCount = reviewList.filter(
+        (review) => review.platform === "COUPANG"
+     ).length;
+
+
   const storeStats = reviewList.reduce((acc, review) => {
     const storeId = review.store_id;
     const storeName = review.stores?.store_name || "매장명 없음";
@@ -120,26 +138,32 @@ export default async function DashboardPage() {
 
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8">
         <div className="bg-white rounded-2xl shadow p-6 border">
           <h3 className="text-lg font-bold text-gray-900">구글 리뷰 현황</h3>
-          <p className="mt-2 text-gray-700">
-            Google 리뷰 통계 및 AI 자동댓글 기능 준비중
+          <p className="mt-2 text-3xl font-bold text-blue-600">
+             {googleCount}건
           </p>
         </div>
 
         <div className="bg-white rounded-2xl shadow p-6 border">
           <h3 className="text-lg font-bold text-gray-900">네이버 리뷰 현황</h3>
-          <p className="mt-2 text-gray-700">
-            네이버 리뷰 반자동댓글 관리 기능 준비중
+          <p className="mt-2 text-3xl font-bold text-green-600">
+              {naverCount}건
           </p>
         </div>
 
         <div className="bg-white rounded-2xl shadow p-6 border">
           <h3 className="text-lg font-bold text-gray-900">배민 리뷰 현황</h3>
-          <p className="mt-2 text-gray-700">
-            배민셀프서비스 자동 또는 반자동댓글 기능 준비중
+          <p className="mt-2 text-3xl font-bold text-cyan-600">
+              {baeminCount}건
           </p>
+        </div>
+        <div className="bg-white rounded-2xl shadow p-6 border">
+           <h3 className="text-lg font-bold text-gray-900">쿠팡이츠 리뷰 현황</h3>
+           <p className="mt-2 text-3xl font-bold text-red-600">
+              {coupangCount}건
+           </p>
         </div>
       </div>
 
@@ -171,8 +195,6 @@ export default async function DashboardPage() {
               <th className="text-left p-3">매장명</th>
               <th className="text-center p-3">전체 리뷰</th>
               <th className="text-center p-3">부정 리뷰</th>
-              <th className="text-center p-3">저장된 답글</th>
-              <th className="text-center p-3">미처리 리뷰</th>
               <th className="text-center p-3">답글완료</th>
               <th className="text-center p-3">미처리</th>
               <th className="text-center p-3">답글률</th>
