@@ -32,6 +32,17 @@ export default function ReviewsPage() {
   >("ALL");
   const [platformMode, setPlatformMode] = useState<"ALL" | "GOOGLE" | "NAVER" | "BAEMIN" | "COUPANG">("ALL");
   const [loading, setLoading] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
+
+  const [newStoreId, setNewStoreId] = useState<number | null>(null);
+
+  const [newPlatform, setNewPlatform] = useState<
+          "GOOGLE" | "NAVER" | "BAEMIN" | "COUPANG"
+  >("NAVER");
+
+  const [newRating, setNewRating] = useState(5);
+
+  const [newReviewText, setNewReviewText] = useState("");
 
   useEffect(() => {
     fetchStores();
@@ -58,6 +69,42 @@ export default function ReviewsPage() {
     setReviews((data || []) as Review[]);
     setLoading(false);
   }
+  async function addReview() {
+  if (!newStoreId) {
+    alert("지점을 선택해 주세요.");
+    return;
+  }
+
+  if (!newReviewText.trim()) {
+    alert("리뷰 내용을 입력해 주세요.");
+    return;
+  }
+
+  const { error } = await supabase.from("reviews").insert({
+    store_id: newStoreId,
+    platform: newPlatform,
+    rating: newRating,
+    review_text: newReviewText.trim(),
+    status: "new",
+  });
+
+  if (error) {
+    alert("리뷰 등록 중 오류가 발생했습니다.");
+    console.error(error);
+    return;
+  }
+
+  alert("리뷰가 등록되었습니다.");
+
+  setNewStoreId(null);
+  setNewPlatform("NAVER");
+  setNewRating(5);
+  setNewReviewText("");
+  setShowAddForm(false);
+
+  fetchReviews();
+}
+
 
   const filteredReviews = reviews.filter((review) => {
     const storeMatch =
@@ -214,8 +261,101 @@ export default function ReviewsPage() {
           >
             {loading ? "불러오는 중..." : "새로고침"}
           </button>
+          <button
+               onClick={() => setShowAddForm(!showAddForm)}
+               className="bg-blue-600 text-white px-4 py-2 rounded"
+          >
+               리뷰 등록
+          </button>
+
+
         </div>
       </section>
+      {showAddForm && (
+  <section className="bg-white rounded-2xl shadow p-5 border mb-6 max-w-3xl">
+    <h2 className="text-xl font-bold mb-4 text-gray-900">리뷰 직접 등록</h2>
+
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+      <div>
+        <label className="block mb-2 font-semibold text-gray-900">지점</label>
+        <select
+          value={newStoreId ?? ""}
+          onChange={(e) => setNewStoreId(Number(e.target.value))}
+          className="border p-2 rounded w-full bg-white text-gray-900"
+        >
+          <option value="">지점 선택</option>
+          {stores.map((store) => (
+            <option key={store.id} value={store.id}>
+              {store.store_name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label className="block mb-2 font-semibold text-gray-900">플랫폼</label>
+        <select
+          value={newPlatform}
+          onChange={(e) =>
+            setNewPlatform(
+              e.target.value as "GOOGLE" | "NAVER" | "BAEMIN" | "COUPANG"
+            )
+          }
+          className="border p-2 rounded w-full bg-white text-gray-900"
+        >
+          <option value="GOOGLE">구글</option>
+          <option value="NAVER">네이버</option>
+          <option value="BAEMIN">배민</option>
+          <option value="COUPANG">쿠팡이츠</option>
+        </select>
+      </div>
+
+      <div>
+        <label className="block mb-2 font-semibold text-gray-900">별점</label>
+        <select
+          value={newRating}
+          onChange={(e) => setNewRating(Number(e.target.value))}
+          className="border p-2 rounded w-full bg-white text-gray-900"
+        >
+          <option value={5}>5점</option>
+          <option value={4}>4점</option>
+          <option value={3}>3점</option>
+          <option value={2}>2점</option>
+          <option value={1}>1점</option>
+        </select>
+      </div>
+    </div>
+
+    <div className="mb-4">
+      <label className="block mb-2 font-semibold text-gray-900">리뷰 내용</label>
+      <textarea
+        value={newReviewText}
+        onChange={(e) => setNewReviewText(e.target.value)}
+        rows={5}
+        className="border p-3 rounded w-full bg-white text-gray-900"
+        placeholder="고객 리뷰 내용을 입력하세요."
+      />
+    </div>
+
+    <div className="flex gap-2">
+      <button
+        onClick={addReview}
+        className="bg-green-600 text-white px-4 py-2 rounded font-semibold"
+      >
+        저장
+      </button>
+
+      <button
+        onClick={() => setShowAddForm(false)}
+        className="bg-gray-200 text-gray-800 px-4 py-2 rounded font-semibold"
+      >
+        취소
+      </button>
+    </div>
+  </section>
+)}
+
+
 
       <div className="mb-4 text-sm text-gray-700">
         표시 중인 리뷰: {filteredReviews.length}개
