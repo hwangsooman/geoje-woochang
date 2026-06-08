@@ -52,9 +52,10 @@ const naverCount = reviewList.filter(
   (review) => (review.platform || "").toUpperCase().trim() === "NAVER"
 ).length;
 
-const baeminCount = reviewList.filter(
-  (review) => (review.platform || "").toUpperCase().trim() === "BAEMIN"
-).length;
+const baeminCount = reviewList.filter((review) => {
+  const platform = (review.platform || "").toUpperCase().trim();
+  return platform === "BAEMIN" || review.platform === "배민";
+}).length;
 
 const coupangCount = reviewList.filter(
   (review) => (review.platform || "").toUpperCase().trim() === "COUPANG"

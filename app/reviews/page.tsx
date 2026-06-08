@@ -105,6 +105,23 @@ export default function ReviewsPage() {
   fetchReviews();
 }
 
+function openGoogleBusiness() {
+  window.open("https://business.google.com", "_blank");
+}
+
+function openNaverPlace() {
+  window.open("https://smartplace.naver.com", "_blank");
+}
+
+function openBaeminSelfService() {
+  window.open("https://self.baemin.com", "_blank");
+}
+
+function openCoupangEatsStore() {
+  window.open("https://store.coupangeats.com", "_blank");
+}
+
+
 
   const filteredReviews = reviews.filter((review) => {
     const storeMatch =
@@ -324,7 +341,50 @@ export default function ReviewsPage() {
           <option value={1}>1점</option>
         </select>
       </div>
+
     </div>
+
+    <div className="mb-4">
+  <p className="font-semibold text-gray-900 mb-2">
+    플랫폼 바로가기
+  </p>
+
+  <div className="flex flex-wrap gap-2">
+
+    <button
+      type="button"
+      onClick={openGoogleBusiness}
+      className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+    >
+      구글
+    </button>
+
+    <button
+      type="button"
+      onClick={openNaverPlace}
+      className="bg-green-600 text-white px-4 py-2 rounded-lg"
+    >
+      네이버
+    </button>
+
+    <button
+      type="button"
+      onClick={openBaeminSelfService}
+      className="bg-cyan-600 text-white px-4 py-2 rounded-lg"
+    >
+      배민
+    </button>
+
+    <button
+      type="button"
+      onClick={openCoupangEatsStore}
+      className="bg-red-600 text-white px-4 py-2 rounded-lg"
+    >
+      쿠팡이츠
+    </button>
+
+  </div>
+</div>
 
     <div className="mb-4">
       <label className="block mb-2 font-semibold text-gray-900">리뷰 내용</label>
