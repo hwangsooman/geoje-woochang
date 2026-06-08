@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+export const dynamic = "force-dynamic";
 type Review = {
   id: number;
   store_id: number;
