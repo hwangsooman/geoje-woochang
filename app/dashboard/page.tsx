@@ -45,20 +45,20 @@ export default async function DashboardPage() {
   const replyRate =
      totalReviews === 0 ? 0 : Math.round((completedReviews / totalReviews) * 100);
      const googleCount = reviewList.filter(
-        (review) => review.platform === "GOOGLE"
-     ).length;
+  (review) => (review.platform || "GOOGLE").toUpperCase().trim() === "GOOGLE"
+).length;
 
-     const naverCount = reviewList.filter(
-         (review) => review.platform === "NAVER"
-     ).length;
+const naverCount = reviewList.filter(
+  (review) => (review.platform || "").toUpperCase().trim() === "NAVER"
+).length;
 
-     const baeminCount = reviewList.filter(
-         (review) => review.platform === "BAEMIN"
-     ).length;
+const baeminCount = reviewList.filter(
+  (review) => (review.platform || "").toUpperCase().trim() === "BAEMIN"
+).length;
 
-     const coupangCount = reviewList.filter(
-        (review) => review.platform === "COUPANG"
-     ).length;
+const coupangCount = reviewList.filter(
+  (review) => (review.platform || "").toUpperCase().trim() === "COUPANG"
+).length;
 
 
   const storeStats = reviewList.reduce((acc, review) => {
