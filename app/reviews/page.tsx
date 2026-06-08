@@ -74,7 +74,7 @@ export default function ReviewsPage() {
          ? review.status?.toLowerCase().trim() === "completed"
          : true;
 
-    const platform = review.platform || "GOOGLE";
+    const platform = (review.platform || "GOOGLE").toUpperCase().trim();
 
     const platformMatch =
       platformMode === "ALL" || platform === platformMode;
@@ -225,7 +225,7 @@ export default function ReviewsPage() {
         {filteredReviews.map((review) => {
           const isCompleted = review.status === "completed";
           const isNegative = review.rating <= 2;
-          const platform = review.platform || "GOOGLE";
+         const platform = (review.platform || "GOOGLE").toUpperCase().trim();
 
           return (
             <Link key={review.id} href={`/reviews/${review.id}`}>
