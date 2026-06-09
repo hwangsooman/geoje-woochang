@@ -60,6 +60,41 @@ const baeminCount = reviewList.filter((review) => {
 const coupangCount = reviewList.filter(
   (review) => (review.platform || "").toUpperCase().trim() === "COUPANG"
 ).length;
+const googleCompleted = reviewList.filter(
+  (review) =>
+    (review.platform || "").toUpperCase().trim() === "GOOGLE" &&
+    review.status?.toLowerCase().trim() === "completed"
+).length;
+
+const naverCompleted = reviewList.filter(
+  (review) =>
+    (review.platform || "").toUpperCase().trim() === "NAVER" &&
+    review.status?.toLowerCase().trim() === "completed"
+).length;
+
+const baeminCompleted = reviewList.filter(
+  (review) =>
+    ((review.platform || "").toUpperCase().trim() === "BAEMIN" ||
+      review.platform === "배민") &&
+    review.status?.toLowerCase().trim() === "completed"
+).length;
+
+const coupangCompleted = reviewList.filter(
+  (review) =>
+    (review.platform || "").toUpperCase().trim() === "COUPANG" &&
+    review.status?.toLowerCase().trim() === "completed"
+).length;
+const googleRate =
+  googleCount === 0 ? 0 : Math.round((googleCompleted / googleCount) * 100);
+
+const naverRate =
+  naverCount === 0 ? 0 : Math.round((naverCompleted / naverCount) * 100);
+
+const baeminRate =
+  baeminCount === 0 ? 0 : Math.round((baeminCompleted / baeminCount) * 100);
+
+const coupangRate =
+  coupangCount === 0 ? 0 : Math.round((coupangCompleted / coupangCount) * 100);
 
 
   const storeStats = reviewList.reduce((acc, review) => {
@@ -144,28 +179,45 @@ const coupangCount = reviewList.filter(
         <div className="bg-white rounded-2xl shadow p-6 border">
           <h3 className="text-lg font-bold text-gray-900">구글 리뷰 현황</h3>
           <p className="mt-2 text-3xl font-bold text-blue-600">
-             {googleCount}건
+              {googleCount}건
           </p>
+
+           <p className="mt-2 text-sm text-gray-600">
+              답글률 {googleRate}%
+           </p>
         </div>
 
         <div className="bg-white rounded-2xl shadow p-6 border">
           <h3 className="text-lg font-bold text-gray-900">네이버 리뷰 현황</h3>
           <p className="mt-2 text-3xl font-bold text-green-600">
-              {naverCount}건
+             {naverCount}건
+          </p>
+
+          <p className="mt-2 text-sm text-gray-600">
+             답글률 {naverRate}%
           </p>
         </div>
 
         <div className="bg-white rounded-2xl shadow p-6 border">
           <h3 className="text-lg font-bold text-gray-900">배민 리뷰 현황</h3>
           <p className="mt-2 text-3xl font-bold text-cyan-600">
-              {baeminCount}건
-          </p>
+             {baeminCount}건
+           </p>
+
+            <p className="mt-2 text-sm text-gray-600">
+                답글률 {baeminRate}%
+             </p>
         </div>
         <div className="bg-white rounded-2xl shadow p-6 border">
            <h3 className="text-lg font-bold text-gray-900">쿠팡이츠 리뷰 현황</h3>
            <p className="mt-2 text-3xl font-bold text-red-600">
-              {coupangCount}건
+               {coupangCount}건
            </p>
+
+           <p className="mt-2 text-sm text-gray-600">
+              답글률 {coupangRate}%
+            </p>
+
         </div>
       </div>
 
