@@ -16,7 +16,7 @@ const branches = [
 
   { name: "김포점", address: "경기도 김포시 김포한강1로 77-29 1동 101호 ",phone:"031-982-9192", image: "/branches/image17.jpg" },
   { name: "원주점", address: "강원특별자치도 원주시 라옹정길 8", phone:"033-765-3377",image: "/branches/image18.jpg" },
-  { name: "원주문막점", address: "강원특별자치도 원주시 문막읍 건등로 30 2층",phone:"033747-1834", image: "/branches/image19.jpg" },
+  { name: "원주문막점", address: "강원특별자치도 원주시 문막읍 건등로 30 2층",phone:"033-747-1834", image: "/branches/image19.jpg" },
   { name: "포항점", address: "경상북도 포항시 남구 동해면 연오로7번길1 105호", phone:"054-277-8532",image: "/branches/image20.jpg" },
   { name: "안계점", address: "경상북도 의성군 안계면 서부로 1838",phone:"054-861-7373", image: "/branches/image21.jpg" },
   { name: "동두천점", address: "경기도 동두천시 하봉암동 141-4",phone:"031-866-0120", image: "/branches/image22.jpg" },
@@ -76,8 +76,13 @@ export default function BranchesPage() {
                 </p>
 
                 <p>
-                  <span className="font-semibold text-gray-900">전화:</span>{" "}
-                   {branch.phone}
+                   <span className="font-semibold text-gray-900">전화:</span>{" "}
+                   <a
+                      href={`tel:${branch.phone.replace(/[^0-9]/g, "")}`}
+                      className="text-blue-600 font-semibold hover:underline"
+                    >
+                         {branch.phone}
+                    </a>
                 </p>
               </div>
 
