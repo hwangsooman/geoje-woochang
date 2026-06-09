@@ -1,18 +1,26 @@
 const branches = [
-  { name: "함안점", address: "경상남도 함안군 산인면 함마대로 2313 1층", image: "/branches/image3.png" },
-  { name: "마산합성점", address: "경상남도 창원시 마산회원구 팔용로 149 (구암동)", image: "/branches/image4.png" },
-  { name: "수원점", address: "경기도 수원시 권선구 서둔로 227 (탑동) 1층 102호", image: "/branches/image5.png" },
-  { name: "울산점", address: "울산광역시 중구 종가 5길 77-1층", image: "/branches/image6.png" },
-  { name: "여주1호점", address: "경기도 여주시 청심로 17-2(하동) 1층", image: "/branches/image7.png" },
-  { name: "창원팔용점", address: "경남 창원시 의창구 의창대로54번길 6-3 1층", image: "/branches/image8.png" },
-  { name: "경남 사천점", address: "경남 사천시 사천읍 선인길7 1층", image: "/branches/image9.png" },
-  { name: "남양주점", address: "경기도 남양주시 백봉로 32, B동 111호", image: "/branches/image10.png" },
-  { name: "시흥점", address: "경기도 시흥시 신천로100번안길 10, 1층", image: "/branches/image11.png" },
-  { name: "진해 신항점", address: "경남 창원시 진해구 신항 4로 41-34, 106호", image: "/branches/image12.png" },
-  { name: "여주2호점", address: "경기도 여주시 청심로 17-2, 1층", image: "/branches/image13.png" },
-  { name: "이천1호점", address: "경기도 이천시 부발읍 무촌로151번길 18", image: "/branches/image14.png" },
-  { name: "전주점", address: "전북특별자치도 전주시 덕진구 떡전로6-1", image: "/branches/image15.png" },
-  { name: "군산 조촌점", address: "전북특별자치도 군산시 부골2길 47-4", image: "/branches/image16.png" },
+  { name: "함안점", address: "경상남도 함안군 산인면 함마대로 2313 1층",phone:"055-582-6766", image: "/branches/image3.png" },
+  { name: "마산합성점", address: "경상남도 창원시 마산회원구 팔용로 149 (구암동)",phone:"055-297-3222", image: "/branches/image4.png" },
+  { name: "수원점", address: "경기도 수원시 권선구 서둔로 227 (탑동) 1층 102호", phone:"031-294-3737",image: "/branches/image5.png" },
+  { name: "울산점", address: "울산광역시 중구 종가 5길 77-1층", phone:"052-246-8282",image: "/branches/image6.png" },
+  { name: "여주1호점", address: "경기도 여주시 청심로 17-2(하동) 1층",phone:"031-883-0907", image: "/branches/image7.png" },
+  { name: "창원팔용점", address: "경남 창원시 의창구 의창대로54번길 6-3 1층",phone:"055-299-4847", image: "/branches/image8.png" },
+  { name: "경남 사천점", address: "경남 사천시 사천읍 선인길7 1층",phone:"055-852-6902", image: "/branches/image9.png" },
+  { name: "남양주점", address: "경기도 남양주시 백봉로 32, B동 111호",phone:"031-511-3366", image: "/branches/image10.png" },
+  { name: "시흥점", address: "경기도 시흥시 신천로100번안길 10, 1층", phone:"031-315-8295",image: "/branches/image11.png" },
+  { name: "진해 신항점", address: "경남 창원시 진해구 신항 4로 41-34, 106호",phone:"055-547-2220", image: "/branches/image12.png" },
+  { name: "여주2호점", address: "경기도 여주시 청심로 17-2, 1층",phone:"031-883-0907", image: "/branches/image13.png" },
+  { name: "이천1호점", address: "경기도 이천시 부발읍 무촌로151번길 18",phone:"031-632-7012", image: "/branches/image14.png" },
+  { name: "전주점", address: "전북특별자치도 전주시 덕진구 떡전로6-1", phone:"063-275-7100",image: "/branches/image15.png" },
+  { name: "군산 조촌점", address: "전북특별자치도 군산시 부골2길 47-4",phone:"063-454-9990", image: "/branches/image16.png" },
+
+  { name: "김포점", address: "경기도 김포시 김포한강1로 77-29 1동 101호 ",phone:"031-982-9192", image: "/branches/image17.jpg" },
+  { name: "원주점", address: "강원특별자치도 원주시 라옹정길 8", phone:"033-765-3377",image: "/branches/image18.jpg" },
+  { name: "원주문막점", address: "강원특별자치도 원주시 문막읍 건등로 30 2층",phone:"033747-1834", image: "/branches/image19.jpg" },
+  { name: "포항점", address: "경상북도 포항시 남구 동해면 연오로7번길1 105호", phone:"054-277-8532",image: "/branches/image20.jpg" },
+  { name: "안계점", address: "경상북도 의성군 안계면 서부로 1838",phone:"054-861-7373", image: "/branches/image21.jpg" },
+  { name: "동두천점", address: "경기도 동두천시 하봉암동 141-4",phone:"031-866-0120", image: "/branches/image22.jpg" },
+
  
 ];
 
@@ -69,7 +77,7 @@ export default function BranchesPage() {
 
                 <p>
                   <span className="font-semibold text-gray-900">전화:</span>{" "}
-                  전화번호 입력 예정
+                   {branch.phone}
                 </p>
               </div>
 
