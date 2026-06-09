@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { useRouter } from "next/navigation";
 
 type Store = {
   id: number;
@@ -32,6 +33,7 @@ export default function ReviewsPage() {
   >("ALL");
   const [platformMode, setPlatformMode] = useState<"ALL" | "GOOGLE" | "NAVER" | "BAEMIN" | "COUPANG">("ALL");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const [showAddForm, setShowAddForm] = useState(false);
 
   const [newStoreId, setNewStoreId] = useState<number | null>(null);
@@ -80,13 +82,17 @@ export default function ReviewsPage() {
     return;
   }
 
-  const { error } = await supabase.from("reviews").insert({
+ const { data, error } = await supabase
+  .from("reviews")
+  .insert({
     store_id: newStoreId,
     platform: newPlatform,
     rating: newRating,
     review_text: newReviewText.trim(),
     status: "new",
-  });
+  })
+  .select()
+  .single();
 
   if (error) {
     alert("리뷰 등록 중 오류가 발생했습니다.");
@@ -96,13 +102,7 @@ export default function ReviewsPage() {
 
   alert("리뷰가 등록되었습니다.");
 
-  setNewStoreId(null);
-  setNewPlatform("NAVER");
-  setNewRating(5);
-  setNewReviewText("");
-  setShowAddForm(false);
-
-  fetchReviews();
+  router.push(`/reviews/${data.id}`);
 }
 
 function openGoogleBusiness() {
