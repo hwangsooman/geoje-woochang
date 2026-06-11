@@ -1,72 +1,72 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import "./globals.css";
 
-export default function HomePage() {
+export const metadata: Metadata = {
+  title: "우창 AI 리뷰관리 플랫폼",
+  description: "우창해장국 AI 리뷰관리 플랫폼",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const menus = [
+    { name: "대시보드", href: "/dashboard", icon: "📊" },
+    { name: "리뷰관리", href: "/reviews", icon: "📝" },
+    { name: "전국지점", href: "/branches", icon: "🏪" },
+    { name: "본점(거제)", href: "/store", icon: "🏠" },
+    { name: "영업관리", href: "/sales", icon: "📈" },
+    { name: "환경설정", href: "/settings", icon: "⚙️" },
+  ];
+
   return (
-    <main className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-yellow-50 text-gray-900">
-      <section className="max-w-6xl mx-auto px-6 py-16">
-        <div className="bg-white rounded-3xl shadow-xl border p-8 md:p-12">
-          <p className="text-sm font-bold text-orange-600 mb-3">
-            Woochang AI Review Management Platform
-          </p>
-
-          <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mb-6">
-            우창해장국<br />
-            AI 리뷰관리 플랫폼
-          </h1>
-
-          <p className="text-lg text-gray-700 leading-relaxed mb-8">
-            본점과 전국 지점의 고객 리뷰를 한눈에 확인하고,
-            AI 답글 생성·미처리 관리·답글률 분석까지 지원하는
-            우창해장국 전용 리뷰관리 시스템입니다.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <div className="bg-orange-50 rounded-2xl p-5 border">
-              <h3 className="font-bold text-lg mb-2">리뷰 통합관리</h3>
-              <p className="text-sm text-gray-700">
-                네이버, 배민, 쿠팡이츠, 구글 리뷰를 한 화면에서 관리합니다.
-              </p>
-            </div>
-
-            <div className="bg-green-50 rounded-2xl p-5 border">
-              <h3 className="font-bold text-lg mb-2">AI 답글 생성</h3>
-              <p className="text-sm text-gray-700">
-                우창해장국 스타일의 정중하고 따뜻한 답글을 빠르게 생성합니다.
-              </p>
-            </div>
-
-            <div className="bg-blue-50 rounded-2xl p-5 border">
-              <h3 className="font-bold text-lg mb-2">본점 대시보드</h3>
-              <p className="text-sm text-gray-700">
-                지점별 리뷰 수, 답글률, 미처리 리뷰를 실시간으로 확인합니다.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href="/dashboard"
-              className="bg-orange-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-orange-700"
-            >
-              대시보드 보기
+    <html lang="ko">
+      <body className="bg-gray-50 text-gray-900">
+        <div className="min-h-screen flex">
+          <aside className="w-64 bg-gray-950 text-white p-5 hidden md:flex md:flex-col">
+            <Link href="/" className="block mb-8">
+              <div className="text-2xl font-extrabold">🍲 우창해장국</div>
+              <div className="text-sm text-gray-400 mt-1">
+                AI Review Platform
+              </div>
             </Link>
 
-            <Link
-              href="/reviews"
-              className="bg-gray-900 text-white px-6 py-3 rounded-xl font-bold hover:bg-black"
-            >
-              리뷰관리 시작
-            </Link>
+            <nav className="space-y-2">
+              {menus.map((menu) => (
+                <Link
+                  key={menu.href}
+                  href={menu.href}
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition"
+                >
+                  <span>{menu.icon}</span>
+                  <span className="font-semibold">{menu.name}</span>
+                </Link>
+              ))}
+            </nav>
 
-            <Link
-              href="/branches"
-              className="bg-white border px-6 py-3 rounded-xl font-bold hover:bg-gray-50"
-            >
-              지점관리
-            </Link>
-          </div>
+            <div className="mt-auto text-xs text-gray-500">
+              Woochang Haejangguk
+              <br />
+              Review Management System
+            </div>
+          </aside>
+
+          <main className="flex-1">
+            <div className="md:hidden bg-gray-950 text-white p-4 flex justify-between items-center">
+              <Link href="/" className="font-bold">
+                🍲 우창해장국
+              </Link>
+              <Link href="/reviews" className="text-sm bg-orange-600 px-3 py-1 rounded">
+                리뷰관리
+              </Link>
+            </div>
+
+            {children}
+          </main>
         </div>
-      </section>
-    </main>
+      </body>
+    </html>
   );
 }
