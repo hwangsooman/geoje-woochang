@@ -45,6 +45,56 @@ export default async function HomePage() {
     (review) => (review.platform || "").toUpperCase().trim() === "COUPANG"
   ).length;
 
+  const googleCompleted = reviewList.filter(
+  (review) =>
+    (review.platform || "GOOGLE").toUpperCase().trim() === "GOOGLE" &&
+    review.status?.toLowerCase().trim() === "completed"
+).length;
+
+const naverCompleted = reviewList.filter(
+  (review) =>
+    (review.platform || "").toUpperCase().trim() === "NAVER" &&
+    review.status?.toLowerCase().trim() === "completed"
+).length;
+
+const baeminCompleted = reviewList.filter(
+  (review) => {
+    const platform = (review.platform || "").toUpperCase().trim();
+
+    return (
+      (platform === "BAEMIN" || review.platform === "배민") &&
+      review.status?.toLowerCase().trim() === "completed"
+    );
+  }
+).length;
+
+const coupangCompleted = reviewList.filter(
+  (review) =>
+    (review.platform || "").toUpperCase().trim() === "COUPANG" &&
+    review.status?.toLowerCase().trim() === "completed"
+).length;
+
+const googleRate =
+  googleCount === 0
+    ? 0
+    : Math.round((googleCompleted / googleCount) * 100);
+
+const naverRate =
+  naverCount === 0
+    ? 0
+    : Math.round((naverCompleted / naverCount) * 100);
+
+const baeminRate =
+  baeminCount === 0
+    ? 0
+    : Math.round((baeminCompleted / baeminCount) * 100);
+
+const coupangRate =
+  coupangCount === 0
+    ? 0
+    : Math.round((coupangCompleted / coupangCount) * 100);
+
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-yellow-50 text-gray-900">
       <div className="max-w-6xl mx-auto px-4 py-10 md:py-16">
@@ -112,6 +162,9 @@ export default async function HomePage() {
                 <p className="text-2xl font-bold text-blue-600">
                   {googleCount}건
                 </p>
+                <p className="text-sm text-gray-500 mt-1">
+                     답글률 {googleRate}%
+                </p>
               </div>
 
               <div className="bg-white rounded-xl p-4 border">
@@ -119,6 +172,10 @@ export default async function HomePage() {
                 <p className="text-2xl font-bold text-green-600">
                   {naverCount}건
                 </p>
+                <p className="text-sm text-gray-500 mt-1">
+                    답글률 {naverRate}%
+                </p>
+
               </div>
 
               <div className="bg-white rounded-xl p-4 border">
@@ -126,12 +183,18 @@ export default async function HomePage() {
                 <p className="text-2xl font-bold text-cyan-600">
                   {baeminCount}건
                 </p>
+                <p className="text-sm text-gray-500 mt-1">
+                     답글률 {baeminRate}%
+                 </p>
               </div>
 
               <div className="bg-white rounded-xl p-4 border">
                 <p className="font-semibold">쿠팡이츠</p>
                 <p className="text-2xl font-bold text-red-600">
                   {coupangCount}건
+                </p>
+                <p className="text-sm text-gray-500 mt-1">
+                     답글률 {coupangRate}%
                 </p>
               </div>
             </div>
