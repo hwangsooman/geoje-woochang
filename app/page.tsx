@@ -1,6 +1,30 @@
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 
-export default function HomePage() {
+export const dynamic = "force-dynamic";
+export default async function HomePage() {
+  const { data: reviews } = await supabase
+    .from("reviews")
+    .select("id, status");
+
+  const { data: stores } = await supabase
+    .from("stores")
+    .select("id");
+
+  const reviewList = reviews || [];
+  const storeList = stores || [];
+
+  const totalReviews = reviewList.length;
+
+  const completedReviews = reviewList.filter(
+    (review) => review.status?.toLowerCase().trim() === "completed"
+  ).length;
+
+  const replyRate =
+    totalReviews === 0 ? 0 : Math.round((completedReviews / totalReviews) * 100);
+
+  const storeCount = storeList.length;
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-yellow-50 text-gray-900">
       <div className="max-w-6xl mx-auto px-4 py-10 md:py-16">
@@ -23,22 +47,26 @@ export default function HomePage() {
 
        <div className="bg-white border rounded-2xl p-5 shadow">
           <p className="text-sm text-gray-500">전체 리뷰</p>
-          <p className="text-3xl font-bold text-orange-600">11</p>
+          <p className="text-3xl font-bold text-orange-600">
+                 {totalReviews} </p>
        </div>
 
        <div className="bg-white border rounded-2xl p-5 shadow">
          <p className="text-sm text-gray-500">답글완료</p>
-         <p className="text-3xl font-bold text-green-600">8</p>
+         <p className="text-3xl font-bold text-green-600">
+                 {completedReviews} </p>
        </div>
 
        <div className="bg-white border rounded-2xl p-5 shadow">
          <p className="text-sm text-gray-500">답글률</p>
-         <p className="text-3xl font-bold text-blue-600">73%</p>
+         <p className="text-3xl font-bold text-blue-600">
+               {replyRate}% </p>
        </div>
 
        <div className="bg-white border rounded-2xl p-5 shadow">
            <p className="text-sm text-gray-500">전국지점</p>
-           <p className="text-3xl font-bold text-red-600">8</p>
+           <p className="text-3xl font-bold text-red-600">
+                {storeCount}  </p>
         </div>
 
       </div>
