@@ -19,6 +19,29 @@ export default function HomePage() {
             AI 답글 생성·미처리 관리·답글률 분석까지 지원하는
             우창해장국 전용 리뷰관리 시스템입니다.
           </p>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+
+       <div className="bg-white border rounded-2xl p-5 shadow">
+          <p className="text-sm text-gray-500">전체 리뷰</p>
+          <p className="text-3xl font-bold text-orange-600">11</p>
+       </div>
+
+       <div className="bg-white border rounded-2xl p-5 shadow">
+         <p className="text-sm text-gray-500">답글완료</p>
+         <p className="text-3xl font-bold text-green-600">8</p>
+       </div>
+
+       <div className="bg-white border rounded-2xl p-5 shadow">
+         <p className="text-sm text-gray-500">답글률</p>
+         <p className="text-3xl font-bold text-blue-600">73%</p>
+       </div>
+
+       <div className="bg-white border rounded-2xl p-5 shadow">
+           <p className="text-sm text-gray-500">전국지점</p>
+           <p className="text-3xl font-bold text-red-600">8</p>
+        </div>
+
+      </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10 text-left">
             <div className="bg-orange-50 rounded-2xl p-6 border">
@@ -27,6 +50,8 @@ export default function HomePage() {
                 네이버, 배민, 쿠팡이츠, 구글 리뷰를 한 화면에서 관리합니다.
               </p>
             </div>
+
+
 
             <div className="bg-green-50 rounded-2xl p-6 border">
               <h3 className="font-bold text-lg mb-2">AI 답글 생성</h3>
@@ -42,6 +67,36 @@ export default function HomePage() {
               </p>
             </div>
           </div>
+
+          <div className="bg-gray-50 rounded-2xl p-6 border mt-8">
+              <h3 className="font-bold text-xl mb-4">
+                 플랫폼 운영 현황
+              </h3>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+            <div className="bg-white rounded-xl p-4 border">
+              <p className="font-semibold">구글</p>
+              <p className="text-2xl font-bold text-blue-600">2건</p>
+            </div>
+
+            <div className="bg-white rounded-xl p-4 border">
+              <p className="font-semibold">네이버</p>
+              <p className="text-2xl font-bold text-green-600">3건</p>
+            </div>
+
+            <div className="bg-white rounded-xl p-4 border">
+              <p className="font-semibold">배민</p>
+              <p className="text-2xl font-bold text-cyan-600">4건</p>
+            </div>
+
+            <div className="bg-white rounded-xl p-4 border">
+               <p className="font-semibold">쿠팡이츠</p>
+               <p className="text-2xl font-bold text-red-600">2건</p>
+            </div>
+
+            </div>
+         </div>
 
           <div className="flex flex-wrap justify-center gap-3">
             <Link
